@@ -1,0 +1,34 @@
+version: '3.8'   
+ 
+services: 
+  app: 
+    image: laravelphp/php-fpm:latest
+    container_name: laravel container
+    volumes:
+      - ./laravel-app:/var/www/html
+    working_dir: /var/www/html
+
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: msql
+    container_name: msql container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+      volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+volumes:
+  dbdata:
